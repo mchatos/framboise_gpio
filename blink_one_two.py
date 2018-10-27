@@ -30,33 +30,34 @@ def button_callback(channel):
     
 #-------------------------------------------------------------------------------
 # VAR et GPIO
-button=2
-leds=[23,24,18,15,14]									#Declaration array leds
+button=27
+leds=[26,16,6,5,25,24,23,22]
 nbLeds=len(leds)
 
 GPIO.setwarnings(False)                 				#désactive le mode warning
 GPIO.setmode(GPIO.BCM)                  				#utilisation des numéros de ports du processeur
 GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)	#Declaration push button
-GPIO.setup(leds, GPIO.OUT)                				#mise en sortie des ports GPIO de l'array leds (broche 16 du connecteur)
+GPIO.setup(leds, GPIO.OUT, initial=GPIO.LOW)			#mise en sortie des ports GPIO de l'array leds (broche 16 du connecteur)
 GPIO.add_event_detect(button,GPIO.RISING,callback=button_callback)
 
 #-------------------------------------------------------------------------------
 # main
 if __name__ == '__main__':
-
+	
 		print("Début du clignotements des LEDs")
 		while True :                        				#boucle infinie
 			for i in range(len(leds)) :
+				print ("led : ", leds[i],"led -1 : ", leds[i-1])
 
-				if leds[i] == leds[-nbLeds] :
-					GPIO.output(leds[i+4], GPIO.LOW)
+				if leds[i] == leds[-nbLeds] :			#On verifie si on est sur la premiere led
+					GPIO.output(leds[nbLeds-1], GPIO.LOW)	#On eteint la derniere led
 					
 				GPIO.output(leds[i-2], GPIO.LOW)
 				GPIO.output(leds[i], GPIO.HIGH)
 				time.sleep(1)
 				
-				if leds[i] == leds[nbLeds-1] :
-					GPIO.output(leds[i-1], GPIO.LOW)
+				if leds[i] == leds[nbLeds-1] :			#On verifie si on est sur la derniere led
+					GPIO.output(leds[i-1], GPIO.LOW)	#On eteint la led precedente
 					time.sleep(1)
 
 #-------------------------------------------------------------------------------

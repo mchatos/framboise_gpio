@@ -30,13 +30,14 @@ def button_callback(channel):
     
 #-------------------------------------------------------------------------------
 # VAR et GPIO
-button=2
-leds=[23,24,18,15,14]									#Declaration array leds
+button=27
+#leds=[21,20,16,1,7,8,25,24]								#Declaration array leds
+leds=[26,16,6,5,25,24,23,22]	
 
 GPIO.setwarnings(False)                 				#désactive le mode warning
 GPIO.setmode(GPIO.BCM)                  				#utilisation des numéros de ports du processeur
 GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)	#Declaration push button
-GPIO.setup(leds, GPIO.OUT)                				#mise en sortie des ports GPIO de l'array leds (broche 16 du connecteur)
+GPIO.setup(leds, GPIO.OUT, initial=GPIO.LOW)			#mise en sortie des ports GPIO de l'array leds (broche 16 du connecteur)
 GPIO.add_event_detect(button,GPIO.RISING,callback=button_callback)
 
 #-------------------------------------------------------------------------------
@@ -46,8 +47,9 @@ if __name__ == '__main__':
 		print("Début du clignotements des LEDs")
 		while True :                        				#boucle infinie
 			for i in range(len(leds)) :
+				print ("led : ", leds[i],"led -1 : ", leds[i-1])
 				GPIO.output(leds[i], GPIO.HIGH)
 				GPIO.output(leds[i-1], GPIO.LOW)
-				time.sleep(1)
+				time.sleep(0.3)
 
 #-------------------------------------------------------------------------------
